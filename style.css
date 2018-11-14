@@ -1,15 +1,15 @@
 body {
 	margin: 0;
 }
-nav {
+.top nav {
 	background-color: #333;
 }
 section {
-	margin: auto;
 	width: 100%;
 	max-width: 1280px;
+	padding: 10px;
 }
-ul {
+.top ul {
 	list-style-type: none;
 	margin: auto;
 	padding: 0;
@@ -19,12 +19,12 @@ ul {
 	max-width: 1280px;
 }
 
-li {
+.top li {
 	float: left;
 	min-width: 100px;
 }
 
-li a {
+.top li a {
 	display: block;
 	color: white;
 	text-align: center;
@@ -32,10 +32,86 @@ li a {
 	text-decoration: none;
 }
 
-li a:hover {
+.top li a:hover {
 	background-color: #111;
 }
 
 .active {
 	background-color: #222;
+}
+
+.left {
+	width: 20%;
+	float: left;
+}
+
+.right {
+	width: 80%;
+	float: left;
+}
+
+.left-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    height: 100%;
+    overflow: auto;
+}
+
+.left li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.left li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.left li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+.content {
+	margin: auto;
+	width: 100%;
+	max-width: 1280px;
+	background: pink;
+}
+
+.table {
+	width: 100%;
+	text-align: left;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.table td {
+	width: 25%;
+}
+
+input[type=text], input[type=number] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+	width: 100px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    float: right;
+    border: none;
+    background: green;
+    color: white;
+}
+
+input[type=submit]:hover {
+    background: #4CAF50;
 }
