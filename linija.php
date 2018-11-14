@@ -7,10 +7,10 @@
 	<body>
 		<nav>
 			<ul>
-				<li><a class="active" href="index.php">Index</a></li>
+				<li><a href="index.php">Index</a></li>
 				<li><a href="luka.php">Luka</a></li>
 				<li><a href="pristaniste.php">Pristanište</a></li>
-				<li><a href="linija.php">Linija</a></li>
+				<li><a class="active" href="linija.php">Linija</a></li>
 				<li><a href="karta.php">Karta</a></li>
 				<li><a href="brod.php">Brod</a></li>
 				<li><a href="putnik.php">Putnik</a></li>
