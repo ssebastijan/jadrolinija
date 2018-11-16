@@ -41,6 +41,7 @@ DROP TABLE IF EXISTS `pristaniste`;
 CREATE TABLE `pristaniste` (
   `sifPristanista` int(11) NOT NULL AUTO_INCREMENT,
   `sifraLuke` int(11) NOT NULL,
+  `nazivPristanista` varchar(50) NOT NULL,
   `kapacitetBroda` int(11) NOT NULL,
   `sifraNadredenogPristanista` int(11) DEFAULT NULL,
   PRIMARY KEY (`sifPristanista`),
