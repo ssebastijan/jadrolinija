@@ -15,7 +15,7 @@
 		$odabranoMjesto = $_POST["mjesto"];
 		require_once 'connection.php';
 		$pristanista = array();
-		$sql = "SELECT * FROM pristaniste WHERE sifraLuke = '$odabranoMjesto'";
+		$sql = "select p1.sifPristanista, p1.sifraLuke, p1.nazivPristanista, p1.kapacitetBroda, p2.nazivPristanista as nazivNadredjenogPristanista from pristaniste p1 left join pristaniste p2 on p1.sifraNadredenogPristanista = p2.sifPristanista WHERE p1.sifraLuke = '$odabranoMjesto' order by p1.sifPristanista";
 		if ($result = mysqli_query($conn, $sql)) {
 			if (mysqli_num_rows($result)) {
 				while($row = mysqli_fetch_assoc($result)) {
@@ -61,7 +61,7 @@
 				<section>
 					<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 						<label for="ime_luke">Odaberite luku</label>
-						<select name="mjesto" onchange="location=<?php echo $_SERVER['PHP_SELF']; ?>">
+						<select name="mjesto" onchange="this.form.submit()">
 							<option value="">-- Odaberite mjesto --</option>
 						<?php foreach ($mjesta as $key => $value) { ?>
 							<option value="<?php echo $value["sifraLuke"]; ?>" <?php if ($odabranoMjesto == $value["sifraLuke"]) { echo "selected"; } ?>><?php echo $value["nazivLuke"] . " (" . $value["nazivMjesta"] . ")"; ?></option>
@@ -73,18 +73,18 @@
 								<thead>
 									<tr>
 										<td>Sifra pristanista</td>
+										<td>Naziv pristaništa</td>
 										<td>Kapacitet broda</td>
 										<td>Nadredjeno pristanište</td>
-										<td>Broj pristaništa</td>
 									</tr>
 								</thead>
 								<tbody>
 									<?php foreach ($pristanista as $key => $value) { ?>
 									<tr>
 										<td><?php echo $value["sifPristanista"]; ?></td>
+										<td><?php echo $value["nazivPristanista"]; ?></td>
 										<td><?php echo $value["kapacitetBroda"]; ?></td>
-										<td><?php echo $value["nazivMjesta"]; ?></td>
-										<td><?php echo $value["brojPristanista"]; ?></td>
+										<td><?php echo $value["nazivNadredjenogPristanista"]; ?></td>
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -93,7 +93,6 @@
 								<h3>U odabranoj luci nema nijednog pristaništa</h3>
 							<?php } ?>
 						<?php } ?>
-						<input type="submit" name="submit" value="Odaberi">
 					</form>
 				</section>
 				<?php }?>
