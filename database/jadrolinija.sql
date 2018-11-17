@@ -16,6 +16,24 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `linija`
+--
+
+DROP TABLE IF EXISTS `linija`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `linija` (
+  `sifraLinije` int(11) NOT NULL AUTO_INCREMENT,
+  `satOdlaska` time NOT NULL,
+  `satDolaska` time NOT NULL,
+  `dan` varchar(50) NOT NULL,
+  `sifraOdlaznogPristanista` int(11) NOT NULL,
+  `sifraDolaznogPristanista` int(11) NOT NULL,
+  PRIMARY KEY (`sifraLinije`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `luka`
 --
 
