@@ -88,14 +88,29 @@ section {
 	width: 100%;
 	text-align: left;
 	border-width: 1px;
-	border-style: solid;
+	border-style: dotted;
 }
 
 .table td {
-	width: 25%;
+	width: 15%;
 }
 
-input[type=text], input[type=number], select {
+tr td {
+	text-align: left;
+	border-width: 1px;
+	border-style: dotted;
+}
+
+thead tr td {
+	padding: 10px 5px;
+	font-weight: 900;
+}
+
+tbody tr td {
+	padding: 5px;
+}
+
+input[type=text], input[type=number], input[type=datetime], select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -114,4 +129,10 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background: #4CAF50;
+}
+
+.error {
+	border-width: 1px;
+	border-style: solid;
+	border-color: red;
 }
