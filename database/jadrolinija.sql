@@ -82,6 +82,23 @@ CREATE TABLE `pristaniste` (
   CONSTRAINT `pristaniste_ibfk_1` FOREIGN KEY (`sifraLuke`) REFERENCES `luka` (`sifraluke`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `putnik`
+--
+
+DROP TABLE IF EXISTS `putnik`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `putnik` (
+  `sifPutnik` int(11) NOT NULL AUTO_INCREMENT,
+  `imePutnik` varchar(50) NOT NULL,
+  `prezimePutnik` varchar(50) NOT NULL,
+  `brojPutovnice` varchar(50) NOT NULL,
+  `drzavljanstvo` varchar(50) NOT NULL,
+  PRIMARY KEY (`sifPutnik`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
