@@ -16,6 +16,21 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `brod`
+--
+
+DROP TABLE IF EXISTS `brod`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `brod` (
+  `sifBrod` int(11) NOT NULL AUTO_INCREMENT,
+  `nazivBrod` varchar(50) NOT NULL,
+  `kapacitetPutnici` int(11) NOT NULL,
+  PRIMARY KEY (`sifBrod`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `linija`
 --
 
