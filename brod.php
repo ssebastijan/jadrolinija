@@ -80,7 +80,7 @@
 									<td><?php echo $brod["sifBrod"]; ?></td>
 									<td><?php echo $brod["nazivBrod"]; ?></td>
 									<td><?php echo $brod["kapacitetPutnici"]; ?></td>
-									<td><button type="button" onclick="brisi(<?php echo $brod["sifBrod"]; ?>);  return false;">Obriši</button></td>
+									<td><button type="button" onclick="brisi(<?php echo $brod["sifBrod"]; ?>);  return false;">Obriši</button><button onclick="uredi(<?php echo $brod["sifBrod"]; ?>)">Uredi</button></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -97,6 +97,9 @@
 			if (cfrm == true) {
 				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
 			}
+		}
+		function uredi(id) {
+			window.location.href = "<?php echo "/jadrolinija/novi_brod.php" . "?edit=true&id="; ?>" + id;
 		}
 	</script>
 </html>
