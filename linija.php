@@ -10,6 +10,27 @@
 		}
 		mysqli_free_result($result);
 	}
+
+	if (isset($_GET["delete"]) && isset($_GET["id"])) {
+		if ($_GET["delete"] == true) {
+			$id = $_GET["id"];
+			require_once 'connection.php';
+			$sql = "DELETE FROM linija WHERE sifraLinije = $id";
+            if (mysqli_query($conn, $sql)) {
+                echo '<script> 
+                	alert("Linija uspješno obrisana"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+                header("Location: " . $_SERVER["PHP_SELF"]);
+            } else {
+            	$err = $conn->error;
+                echo '<script> 
+                	alert("' . $err . '"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+            }
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,6 +74,7 @@
 									<td>Dan</td>
 									<td>Odlazno pristanište</td>
 									<td>Dolazno pristanište</td>
+									<td>Akcija</td>
 								</tr>
 							</thead>
 							<tbody>
@@ -64,6 +86,7 @@
 									<td><?php echo $linija["dan"]; ?></td>
 									<td><?php echo $linija["odlaznoPristaniste"]; ?></td>
 									<td><?php echo $linija["dolaznoPristaniste"]; ?></td>
+									<td><button type="button" onclick="brisi(<?php echo $linija["sifraLinije"]; ?>);  return false;">Obriši</button></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -74,4 +97,12 @@
 			</div>
 		</div>
 	</body>
+	<script>
+		function brisi(id) {
+			var cfrm = confirm("Jeste li sigurni da želite obrisati?");
+			if (cfrm == true) {
+				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
+			}
+		}
+	</script>
 </html>

@@ -10,6 +10,26 @@
 		}
 		mysqli_free_result($result);
 	}
+
+	if (isset($_GET["delete"]) && isset($_GET["id"])) {
+		if ($_GET["delete"] == true) {
+			$id = $_GET["id"];
+			require_once 'connection.php';
+			$sql = "DELETE FROM luka WHERE sifraLuke = $id";
+            if (mysqli_query($conn, $sql)) {
+                echo '<script> 
+                	alert("Luka uspješno obrisana"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+            } else {
+            	$err = $conn->error;
+                echo '<script> 
+                	alert("' . $err . '"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+            }
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -51,15 +71,17 @@
 								<td>Naziv</td>
 								<td>Mjesto</td>
 								<td>Broj pristaništa</td>
+								<td>Akcija</td>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($luke as $key => $value) { ?>
+							<?php foreach ($luke as $luka) { ?>
 							<tr>
-								<td><?php echo $value["sifraLuke"]; ?></td>
-								<td><?php echo $value["nazivLuke"]; ?></td>
-								<td><?php echo $value["nazivMjesta"]; ?></td>
-								<td><?php echo $value["brojPristanista"]; ?></td>
+								<td><?php echo $luka["sifraLuke"]; ?></td>
+								<td><?php echo $luka["nazivLuke"]; ?></td>
+								<td><?php echo $luka["nazivMjesta"]; ?></td>
+								<td><?php echo $luka["brojPristanista"]; ?></td>
+								<td><button onclick="brisi(<?php echo $luka["sifraLuke"]; ?>)">Obriši</button></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -69,4 +91,12 @@
 			</div>
 		</div>
 	</body>
+	<script>
+		function brisi(id) {
+			var cfrm = confirm("Jeste li sigurni da želite obrisati?");
+			if (cfrm == true) {
+				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
+			}
+		}
+	</script>
 </html>
