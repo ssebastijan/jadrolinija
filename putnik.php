@@ -86,7 +86,7 @@
 									<td><?php echo $putnik["prezimePutnik"]; ?></td>
 									<td><?php echo $putnik["brojPutovnice"]; ?></td>
 									<td><?php echo $putnik["drzavljanstvo"]; ?></td>
-									<td><button type="button" onclick="brisi(<?php echo $putnik["sifPutnik"]; ?>);  return false;">Obriši</button></td>
+									<td><button type="button" onclick="brisi(<?php echo $putnik["sifPutnik"]; ?>);  return false;">Obriši</button><button onclick="uredi(<?php echo $putnik["sifPutnik"]; ?>)">Uredi</button></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -103,6 +103,9 @@
 			if (cfrm == true) {
 				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
 			}
+		}
+		function uredi(id) {
+			window.location.href = "<?php echo "/jadrolinija/novi_putnik.php" . "?edit=true&id="; ?>" + id;
 		}
 	</script>
 </html>
