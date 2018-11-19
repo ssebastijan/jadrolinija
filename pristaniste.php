@@ -25,6 +25,27 @@
 			mysqli_free_result($result);
 		}
 	}
+
+	if (isset($_GET["delete"]) && isset($_GET["id"])) {
+		if ($_GET["delete"] == true) {
+			$id = $_GET["id"];
+			require_once 'connection.php';
+			$sql = "DELETE FROM pristaniste WHERE sifPristanista = $id";
+            if (mysqli_query($conn, $sql)) {
+                echo '<script> 
+                	alert("Pristanište uspješno obrisano"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+                header("Location: " . $_SERVER["PHP_SELF"]);
+            } else {
+            	$err = $conn->error;
+                echo '<script> 
+                	alert("' . $err . '"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+            }
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -76,15 +97,17 @@
 										<td>Naziv pristaništa</td>
 										<td>Kapacitet broda</td>
 										<td>Nadredjeno pristanište</td>
+										<td>Akcija</td>
 									</tr>
 								</thead>
 								<tbody>
-									<?php foreach ($pristanista as $key => $value) { ?>
+									<?php foreach ($pristanista as $pristaniste) { ?>
 									<tr>
-										<td><?php echo $value["sifPristanista"]; ?></td>
-										<td><?php echo $value["nazivPristanista"]; ?></td>
-										<td><?php echo $value["kapacitetBroda"]; ?></td>
-										<td><?php echo $value["nazivNadredjenogPristanista"]; ?></td>
+										<td><?php echo $pristaniste["sifPristanista"]; ?></td>
+										<td><?php echo $pristaniste["nazivPristanista"]; ?></td>
+										<td><?php echo $pristaniste["kapacitetBroda"]; ?></td>
+										<td><?php echo $pristaniste["nazivNadredjenogPristanista"]; ?></td>
+										<td><button type="button" onclick="brisi(<?php echo $pristaniste["sifPristanista"]; ?>);  return false;">Obriši</button></td>
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -99,4 +122,12 @@
 			</div>
 		</div>
 	</body>
+	<script>
+		function brisi(id) {
+			var cfrm = confirm("Jeste li sigurni da želite obrisati?");
+			if (cfrm == true) {
+				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
+			}
+		}
+	</script>
 </html>

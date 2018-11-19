@@ -10,6 +10,27 @@
 		}
 		mysqli_free_result($result);
 	}
+
+	if (isset($_GET["delete"]) && isset($_GET["id"])) {
+		if ($_GET["delete"] == true) {
+			$id = $_GET["id"];
+			require_once 'connection.php';
+			$sql = "DELETE FROM brod WHERE sifBrod = $id";
+            if (mysqli_query($conn, $sql)) {
+                echo '<script> 
+                	alert("Brod uspješno obrisan"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+                header("Location: " . $_SERVER["PHP_SELF"]);
+            } else {
+            	$err = $conn->error;
+                echo '<script> 
+                	alert("' . $err . '"); 
+                	window.location.href = "' . $_SERVER["PHP_SELF"] . '"; 
+                </script>';
+            }
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +71,7 @@
 									<td>Sifra broda</td>
 									<td>Naziv broda</td>
 									<td>Kapacitet putnika</td>
+									<td>Akcija</td>
 								</tr>
 							</thead>
 							<tbody>
@@ -58,6 +80,7 @@
 									<td><?php echo $brod["sifBrod"]; ?></td>
 									<td><?php echo $brod["nazivBrod"]; ?></td>
 									<td><?php echo $brod["kapacitetPutnici"]; ?></td>
+									<td><button type="button" onclick="brisi(<?php echo $brod["sifBrod"]; ?>);  return false;">Obriši</button></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -68,4 +91,12 @@
 			</div>
 		</div>
 	</body>
+	<script>
+		function brisi(id) {
+			var cfrm = confirm("Jeste li sigurni da želite obrisati?");
+			if (cfrm == true) {
+				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
+			}
+		}
+	</script>
 </html>
