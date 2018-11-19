@@ -30,7 +30,31 @@
 		}
 		mysqli_free_result($result);
 	}
-	if (isset($_POST["submit"])) {
+
+	if (isset($_GET["edit"]) && isset($_GET["putnik"]) && isset($_GET["linija"]) && isset($_GET["brod"])) {
+		$putnik = $_GET["putnik"];
+		$linija = $_GET["linija"];
+		$brod = $_GET["brod"];
+		require_once 'connection.php';
+		$karta = array();
+		$sql = "SELECT * FROM karta WHERE sifPutnika = $putnik AND sifLinije = $linija AND sifBroda = $brod";
+		if ($result = mysqli_query($conn, $sql)) {
+			if (mysqli_num_rows($result)) {
+				while($row = mysqli_fetch_assoc($result)) {
+					array_push($karta, $row);
+				}
+			}
+			mysqli_free_result($result);
+		}
+		if (count($karta) > 0) {
+			$ima_karta = true; 
+		}
+		$id = $karta[0]["id"];
+		$sifPutnika = $karta[0]["sifPutnika"];
+		$sifLinije = $karta[0]["sifLinije"];
+		$sifBroda = $karta[0]["sifBroda"];
+		
+	} if (isset($_POST["save"])) {
 		$sifPutnika = $_POST["putnik"];
 		$sifLinije = $_POST["linija"];
 		$sifBroda = $_POST["brod"];
@@ -48,6 +72,27 @@
 		} else {
 			echo "Nisu odabrana sva polja!!!";
 		}
+	} else if (isset($_POST["edit"])) {
+		$id = $_POST["id"];
+		$sifPutnika = $_POST["putnik"];
+		$sifLinije = $_POST["linija"];
+		$sifBroda = $_POST["brod"];
+
+		if ($sifPutnika != "" && $sifLinije != "" && $sifBroda != "") {
+			$sql = "UPDATE karta SET sifPutnika = '$sifPutnika', sifLinije = '$sifLinije', sifBroda = '$sifBroda', satPolaska = '$sifLinije' WHERE id = $id";
+			if (mysqli_query($conn, $sql)) {
+				$sifPutnika = "";
+				$sifLinije = "";
+				$sifBroda = "";
+                exit(header("Location: karta.php"));
+            } else {
+                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
+            }
+		} else {
+			echo "Nisu odabrana sva polja!!!";
+		}
+		
+		$ima_karta = true;
 	}
 ?>
 
@@ -81,6 +126,9 @@
 			<div class="right">
 				<section>
 					<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+						<?php if($ima_karta) { ?>
+						<input type="hidden" name="id" value="<?php echo $id; ?>">
+						<?php } ?>
 						<label for="putnik">Putnik</label>
 						<select name="putnik">
 							<option value="">-- Odaberi putnika --</option>
@@ -102,7 +150,11 @@
 								<option value="<?php echo $brod["sifBrod"]; ?>" <?php if($brod["sifBrod"] == $sifBroda) { echo "selected"; } ?>><?php echo $brod["nazivBrod"]; ?></option>
 							<?php } ?>
 						</select>
-						<input type="submit" name="submit" value="Spremi">
+						<?php if(!$ima_karta) { ?>
+						<input type="submit" name="save" value="Spremi">
+						<?php } else { ?>
+						<input type="submit" name="edit" value="Uredi">
+						<?php } ?>
 					</form>
 				</section>
 			</div>
