@@ -88,7 +88,9 @@
 									<td><?php echo $karta["brod"]; ?></td>
 									<td><?php echo $karta["datKarte"]; ?></td>
 									<td><?php echo $karta["odlazak"]; ?></td>
-									<td><button type="button" onclick="brisi(<?php echo $karta["sifPutnika"]; ?>, <?php echo $karta["sifLinije"]; ?>, <?php echo $karta["sifBroda"]; ?>);  return false;">Obriši</button></td>
+									<td>
+										<button type="button" onclick="brisi(<?php echo $karta["sifPutnika"]; ?>, <?php echo $karta["sifLinije"]; ?>, <?php echo $karta["sifBroda"]; ?>);  return false;">Obriši</button>
+										<button onclick="uredi(<?php echo $karta["sifPutnika"]; ?>, <?php echo $karta["sifLinije"]; ?>, <?php echo $karta["sifBroda"]; ?>)">Uredi</button></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -105,6 +107,9 @@
 			if (cfrm == true) {
 				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&putnik="; ?>" + putnik + "&linija=" + linija + "&brod=" + brod;
 			}
+		}
+		function uredi(putnik, linija, brod) {
+			window.location.href = "<?php echo "/jadrolinija/nova_karta.php" . "?edit=true&putnik="; ?>" + putnik + "&linija=" + linija + "&brod=" + brod;;
 		}
 	</script>
 </html>

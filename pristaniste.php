@@ -107,7 +107,9 @@
 										<td><?php echo $pristaniste["nazivPristanista"]; ?></td>
 										<td><?php echo $pristaniste["kapacitetBroda"]; ?></td>
 										<td><?php echo $pristaniste["nazivNadredjenogPristanista"]; ?></td>
-										<td><button type="button" onclick="brisi(<?php echo $pristaniste["sifPristanista"]; ?>);  return false;">Obriši</button></td>
+										<td>
+											<button type="button" onclick="brisi(<?php echo $pristaniste["sifPristanista"]; ?>);  return false;">Obriši</button>
+											<button onclick="uredi(<?php echo $pristaniste["sifPristanista"]; ?>);  return false;">Uredi</button></td>
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -128,6 +130,9 @@
 			if (cfrm == true) {
 				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
 			}
+		}
+		function uredi(id) {
+			window.location.href = "<?php echo "/jadrolinija/novo_pristaniste.php" . "?edit=true&id="; ?>" + id;
 		}
 	</script>
 </html>

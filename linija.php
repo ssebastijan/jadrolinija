@@ -86,7 +86,7 @@
 									<td><?php echo $linija["dan"]; ?></td>
 									<td><?php echo $linija["odlaznoPristaniste"]; ?></td>
 									<td><?php echo $linija["dolaznoPristaniste"]; ?></td>
-									<td><button type="button" onclick="brisi(<?php echo $linija["sifraLinije"]; ?>);  return false;">Obriši</button></td>
+									<td><button type="button" onclick="brisi(<?php echo $linija["sifraLinije"]; ?>);  return false;">Obriši</button><button onclick="uredi(<?php echo $linija["sifraLinije"]; ?>);  return false;">Uredi</button></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -103,6 +103,9 @@
 			if (cfrm == true) {
 				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
 			}
+		}
+		function uredi(id) {
+			window.location.href = "<?php echo "/jadrolinija/nova_linija.php" . "?edit=true&id="; ?>" + id;
 		}
 	</script>
 </html>

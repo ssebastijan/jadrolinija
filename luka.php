@@ -81,7 +81,7 @@
 								<td><?php echo $luka["nazivLuke"]; ?></td>
 								<td><?php echo $luka["nazivMjesta"]; ?></td>
 								<td><?php echo $luka["brojPristanista"]; ?></td>
-								<td><button onclick="brisi(<?php echo $luka["sifraLuke"]; ?>)">Obriši</button></td>
+								<td><button onclick="brisi(<?php echo $luka["sifraLuke"]; ?>)">Obriši</button><button onclick="uredi(<?php echo $luka["sifraLuke"]; ?>)">Uredi</button></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -97,6 +97,9 @@
 			if (cfrm == true) {
 				window.location.href = "<?php echo $_SERVER["PHP_SELF"] . "?delete=true&id="; ?>" + id;
 			}
+		}
+		function uredi(id) {
+			window.location.href = "<?php echo "/jadrolinija/nova_luka.php" . "?edit=true&id="; ?>" + id;
 		}
 	</script>
 </html>
