@@ -59,6 +59,7 @@
 		} else {
 			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
 		}
+		$ima_luka = true; 
 	}
 ?>
 <!DOCTYPE html>
