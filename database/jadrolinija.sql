@@ -31,6 +31,30 @@ CREATE TABLE `brod` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `karta`
+--
+
+DROP TABLE IF EXISTS `karta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `karta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sifPutnika` int(11) NOT NULL,
+  `sifLinije` int(11) NOT NULL,
+  `sifBroda` int(11) NOT NULL,
+  `datKarte` datetime DEFAULT CURRENT_TIMESTAMP,
+  `satPolaska` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sifPutnika` (`sifPutnika`),
+  KEY `sifLinije` (`sifLinije`),
+  KEY `sifBroda` (`sifBroda`),
+  CONSTRAINT `karta_ibfk_1` FOREIGN KEY (`sifPutnika`) REFERENCES `putnik` (`sifputnik`) ON UPDATE CASCADE,
+  CONSTRAINT `karta_ibfk_2` FOREIGN KEY (`sifLinije`) REFERENCES `linija` (`sifralinije`) ON UPDATE CASCADE,
+  CONSTRAINT `karta_ibfk_3` FOREIGN KEY (`sifBroda`) REFERENCES `brod` (`sifbrod`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `linija`
 --
 
