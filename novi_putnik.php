@@ -1,15 +1,18 @@
 <?php
 	function validacijaPutovnice($brPutovnice)
 	{
+		if (strlen($brPutovnice) == 10) {
+			return 1;
+		}
 		return 0;
 	}
 
 	function validacijaImena($ime)
 	{
 		if (strlen($ime) >= 3) {
-			return 0;
+			return 1;
 		}
-		return 1;
+		return 0;
 	}
 
 	if (isset($_GET["edit"]) && isset($_GET["id"])) { 
@@ -40,7 +43,21 @@
 		$broj_putovnice = $_POST["broj_putovnice"];
 		$drzavljanstvo = $_POST["drzavljanstvo"];
 
-		if (!validacijaPutovnice($broj_putovnice) && !validacijaImena($ime_putnika) && !validacijaImena($prezime_putnika)) {
+		$errors = array();
+		if (!validacijaImena($ime_putnika)) {
+			$errors[0] = "Neispravno uneseno ime";
+		}
+		if (!validacijaImena($ime_putnika)) {
+			$errors[1] = "Neispravno uneseno prezime";
+		}
+		if (!validacijaPutovnice($broj_putovnice)) {
+			$errors[2] = "Neispravno unesen broj putovnice";
+		}
+		if (!validacijaImena($drzavljanstvo)) {
+			$errors[3] = "Neispravno uneseno državljanjstvo";
+		}
+
+		if (count($errors) == 0) {
 			require_once 'connection.php';
 			$sql = "INSERT INTO putnik (imePutnik, prezimePutnik, brojPutovnice, drzavljanstvo) VALUES ('$ime_putnika', '$prezime_putnika', '$broj_putovnice', '$drzavljanstvo');";
             if (mysqli_query($conn, $sql)) {
@@ -48,12 +65,10 @@
 				$prezime_putnika = "";
 				$broj_putovnice = "";
 				$drzavljanstvo = "";
-                header("Location: novi_putnik.php");
+                header("Location: putnik.php");
             } else {
-                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
-		} else {
-			echo '<script>alert("Nije sve validirano!");</script>';
 		}
 	} else if(isset($_POST["edit"])) {
 		$sifra_putnika = $_POST["sifra_putnika"];
@@ -61,7 +76,22 @@
 		$prezime_putnika = $_POST["prezime_putnika"];
 		$broj_putovnice = $_POST["broj_putovnice"];
 		$drzavljanstvo = $_POST["drzavljanstvo"];
-		if (!validacijaPutovnice($broj_putovnice) && !validacijaImena($ime_putnika) && !validacijaImena($prezime_putnika)) {
+
+		$errors = array();
+		if (!validacijaImena($ime_putnika)) {
+			$errors[0] = "Neispravno uneseno ime";
+		}
+		if (!validacijaImena($ime_putnika)) {
+			$errors[1] = "Neispravno uneseno prezime";
+		}
+		if (!validacijaPutovnice($broj_putovnice)) {
+			$errors[2] = "Neispravno unesen broj putovnice";
+		}
+		if (!validacijaImena($drzavljanstvo)) {
+			$errors[3] = "Neispravno uneseno državljanjstvo";
+		}
+
+		if (count($errors) == 0) {
 			require_once 'connection.php';
 			$sql = "UPDATE putnik SET imePutnik = '$ime_putnika', prezimePutnik = '$prezime_putnika', brojPutovnice = '$broj_putovnice', drzavljanstvo = '$drzavljanstvo' WHERE sifPutnik = $sifra_putnika";
             if (mysqli_query($conn, $sql)) {
@@ -72,10 +102,8 @@
 				$drzavljanstvo = "";
                 header("Location: putnik.php");
             } else {
-                echo '<script>alert("Dogodila se greška prilikom uredjivanja podataka u bazi!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
-		} else {
-			echo '<script>alert("Nije sve validirano!");</script>';
 		}
 		$ima_putnika = true;
 	}
@@ -118,13 +146,13 @@
 						<input type="hidden" name="sifra_putnika" value="<?php echo $sifra_putnika; ?>">
 						<?php } ?>
 						<label for="ime_putnika">Ime</label>
-						<input type="text" name="ime_putnika" value="<?php echo $ime_putnika; ?>">
+						<input class="<?php if($errors[0]) { echo "error"; } ?>" type="text" name="ime_putnika" value="<?php echo $ime_putnika; ?>">
 						<label for="prezime_putnika">Prezime</label>
-						<input type="text" name="prezime_putnika" value="<?php echo $prezime_putnika; ?>">
+						<input class="<?php if($errors[1]) { echo "error"; } ?>" type="text" name="prezime_putnika" value="<?php echo $prezime_putnika; ?>">
 						<label for="broj_putovnice">Broj putovnice</label>
-						<input type="text" name="broj_putovnice" value="<?php echo $broj_putovnice; ?>">
+						<input class="<?php if($errors[2]) { echo "error"; } ?>" type="text" name="broj_putovnice" value="<?php echo $broj_putovnice; ?>">
 						<label for="drzavljanstvo">Državljanstvo</label>
-						<input type="text" name="drzavljanstvo" value="<?php echo $drzavljanstvo; ?>">
+						<input class="<?php if($errors[3]) { echo "error"; } ?>" type="text" name="drzavljanstvo" value="<?php echo $drzavljanstvo; ?>">
 						<?php if(!$ima_putnika) { ?>
 						<input type="submit" name="save" value="Spremi">
 						<?php } else { ?>
