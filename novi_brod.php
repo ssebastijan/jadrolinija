@@ -22,8 +22,15 @@
 		$ime_broda = $_POST["ime_broda"];
 		$kapacitet_broda = $_POST["kapacitet_broda"];
 
+		$errors = array();
+		if (strlen($ime_broda) < 3) {
+			$errors[0] = "Ime broda mora imati više od 3 slova";
+		}
+		if (!is_numeric($kapacitet_broda)) {
+			$errors[1] = "Kapacitet broda mora biti cijeli broj";
+		}
 
-		if (strlen($ime_broda) > 3 && is_numeric($kapacitet_broda)) {
+		if (count($errors) == 0) {
 			require_once 'connection.php';
 			$sql = "INSERT INTO brod (nazivBrod, kapacitetPutnici) VALUES ('$ime_broda', '$kapacitet_broda');";
             if (mysqli_query($conn, $sql)) {
@@ -31,17 +38,23 @@
 				$kapacitet_broda = "";
                 header("Location: novi_brod.php");
             } else {
-                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
-		} else {
-			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
 		}
 	} else if(isset($_POST["edit"])) { 
 		$sifra_broda = $_POST["sifra_broda"];
 		$ime_broda = $_POST["ime_broda"];
 		$kapacitet_broda = $_POST["kapacitet_broda"];
 
-		if (strlen($ime_broda) > 3 && is_numeric($kapacitet_broda)) {
+		$errors = array();
+		if (strlen($ime_broda) < 3) {
+			$errors[0] = "Ime broda mora imati više od 3 slova";
+		}
+		if (!is_numeric($kapacitet_broda)) {
+			$errors[1] = "Kapacitet broda mora biti cijeli broj";
+		}
+
+		if (count($errors) == 0) {
 			require_once 'connection.php';
 			$sql = "UPDATE brod set nazivBrod = '$ime_broda', kapacitetPutnici = '$kapacitet_broda' WHERE sifBrod = $sifra_broda";
             if (mysqli_query($conn, $sql)) {
@@ -50,10 +63,8 @@
 				$kapacitet_broda = "";
                 header("Location: brod.php");
             } else {
-                echo '<script>alert("Dogodila se greška prilikom uredjivanja podataka u bazi!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
-		} else {
-			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
 		}
 
 		$ima_brod = true;
@@ -93,9 +104,9 @@
 						<input type="hidden" name="sifra_broda" value="<?php echo $sifra_broda; ?>">
 						<?php } ?>
 						<label for="ime_broda">Naziv broda</label>
-						<input type="text" name="ime_broda" value="<?php echo $ime_broda; ?>">
+						<input class="<?php if($errors[0]) { echo "error"; } ?>" type="text" name="ime_broda" value="<?php echo $ime_broda; ?>">
 						<label for="kapacitet_broda">Kapacitet broda</label>
-						<input type="number" name="kapacitet_broda" value="<?php echo $kapacitet_broda; ?>">
+						<input class="<?php if($errors[1]) { echo "error"; } ?>" type="number" name="kapacitet_broda" value="<?php echo $kapacitet_broda; ?>">
 						<?php if(!$ima_brod) { ?>
 						<input type="submit" name="save" value="Spremi">
 						<?php } else { ?>
