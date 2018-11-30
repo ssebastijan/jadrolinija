@@ -25,7 +25,18 @@
 		$ime_mjesta = $_POST["ime_mjesta"];
 		$br_pristanista = $_POST["br_pristanista"];
 
-		if (strlen($ime_luke) > 3 && strlen($ime_mjesta) > 3 && is_numeric($br_pristanista)) {
+		$errors = array();
+		if (strlen($ime_luke) < 3) {
+			$errors[0] = "Ime luke mora imati više od 3 slova";
+		}
+		if (strlen($ime_mjesta) < 3) {
+			$errors[1] = "Ime mjesta mora imati više od 3 slova";
+		}
+		if (!is_numeric($br_pristanista)) {
+			$errors[2] = "Morate unijeti cijeli broj";
+		}
+
+		if (count($errors) == 0) {
 			require_once 'connection.php';
 			$sql = "INSERT INTO luka (nazivLuke, nazivMjesta, brojPristanista) VALUES ('$ime_luke', '$ime_mjesta', '$br_pristanista');";
             if (mysqli_query($conn, $sql)) {
@@ -34,10 +45,8 @@
 				$br_pristanista = "";
                 header("Location: luka.php");
             } else {
-                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
-		} else {
-			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
 		}
 	} else if(isset($_POST["uredi"])) {
 		$sifra_luke = $_POST["sifra_luke"];
@@ -45,7 +54,18 @@
 		$ime_mjesta = $_POST["ime_mjesta"];
 		$br_pristanista = $_POST["br_pristanista"];
 
-		if (strlen($ime_luke) > 3 && strlen($ime_mjesta) > 3 && is_numeric($br_pristanista)) {
+		$errors = array();
+		if (strlen($ime_luke) < 3) {
+			$errors[0] = "Ime luke mora imati više od 3 slova";
+		}
+		if (strlen($ime_mjesta) < 3) {
+			$errors[1] = "Ime mjesta mora imati više od 3 slova";
+		}
+		if (!is_numeric($br_pristanista)) {
+			$errors[2] = "Morate unijeti cijeli broj";
+		}
+
+		if (count($errors) == 0) {
 			require_once 'connection.php';
 			$sql = "UPDATE luka set nazivLuke = '$ime_luke', nazivMjesta = '$ime_mjesta', brojPristanista = '$br_pristanista' WHERE sifraLuke = $sifra_luke";
             if (mysqli_query($conn, $sql)) {
@@ -54,10 +74,8 @@
 				$br_pristanista = "";
                 header("Location: luka.php");
             } else {
-                echo '<script>alert("Dogodila se greška prilikom promjene podataka u bazi!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
-		} else {
-			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
 		}
 		$ima_luka = true; 
 	}
@@ -100,11 +118,11 @@
 						<input type="hidden" name="sifra_luke" value="<?php echo $sifra_luke; ?>">
 						<?php } ?>
 						<label for="ime_luke">Naziv luke</label>
-						<input type="text" name="ime_luke" value="<?php echo $ime_luke; ?>">
+						<input class="<?php if($errors[0]) { echo "error"; } ?>" type="text" name="ime_luke" value="<?php echo $ime_luke; ?>">
 						<label for="ime_mjesta">Naziv mjesta</label>
-						<input type="text" name="ime_mjesta" value="<?php echo $ime_mjesta; ?>">
+						<input class="<?php if($errors[1]) { echo "error"; } ?>" type="text" name="ime_mjesta" value="<?php echo $ime_mjesta; ?>">
 						<label for="br_pristanista">Broj pristaništa</label>
-						<input type="number" name="br_pristanista" min="0" value="<?php echo $br_pristanista; ?>">
+						<input class="<?php if($errors[2]) { echo "error"; } ?>" type="number" name="br_pristanista" min="0" value="<?php echo $br_pristanista; ?>">
 						<?php if ($ima_luka) { ?>
 						<input type="submit" name="uredi" value="Uredi">
 						<?php } else { ?>
