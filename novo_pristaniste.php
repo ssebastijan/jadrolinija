@@ -52,45 +52,30 @@
 		if ($sif_nadr_pristanista == "") {
 			$sif_nadr_pristanista = "NULL";
 		}
+		$errors = array();
+		if ($sifra_luke < 1) {
+			$errors[0] = "Odaberite luku";
+		}
+		if (strlen($naziv_pristanista) < 3) {
+			$errors[1] = "Naziv pristaništa mora imati više od 3 slova";
+		}
+		if (!is_numeric($kapacitet_broda)) {
+			$errors[2] = "Kapacitet broda mora biti cijeli broj";
+		}
 
-		if (is_numeric($kapacitet_broda)) {
-
-
-			$sql = "SELECT sifraLuke, brojPristanista FROM luka WHERE sifraLuke = $sifra_luke";
-			if ($result = mysqli_query($conn, $sql)) {
-				if (mysqli_num_rows($result)) {
-					while($row = mysqli_fetch_assoc($result)) {
-						$maxBrPrist = $row["brojPristanista"];
-					}
-				}
-				mysqli_free_result($result);
-			}
-			$sql = "select count(sifraLuke) as cnt from pristaniste where sifraLuke = $sifra_luke";
-			if ($result = mysqli_query($conn, $sql)) {
-				if (mysqli_num_rows($result)) {
-					while($row = mysqli_fetch_assoc($result)) {
-						$brPrist = $row["cnt"];
-					}
-				}
-				mysqli_free_result($result);
-			}
-
-			if ($brPrist < $maxBrPrist) {
-				require_once 'connection.php';
-				$sql = "INSERT INTO pristaniste (sifraLuke, kapacitetBroda, nazivPristanista, sifraNadredenogPristanista) VALUES ('$sifra_luke', '$kapacitet_broda', '$naziv_pristanista', $sif_nadr_pristanista);";
-	            if (mysqli_query($conn, $sql)) {
-					$sifra_luke = "";
-					$kapacitet_broda = "";
-					$sif_nadr_pristanista = "";
-	                exit(header("Location: novo_pristaniste.php"));
-	            } else {
-	                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
-	            }
-	        } else {
-	        	echo '<script>alert("Popunjena su sva mjesta u luci!");</script>';
-	        }
-		} else {
-			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
+		if (count($errors) == 0) {
+			require_once 'connection.php';
+			$sql = "INSERT INTO pristaniste (sifraLuke, kapacitetBroda, nazivPristanista, sifraNadredenogPristanista) VALUES ('$sifra_luke', '$kapacitet_broda', '$naziv_pristanista', $sif_nadr_pristanista);";
+            if (mysqli_query($conn, $sql)) {
+				$sifra_luke = "";
+				$kapacitet_broda = "";
+				$sif_nadr_pristanista = "";
+                exit(header("Location: novo_pristaniste.php"));
+            }
+            if (!mysqli_query($conn, $sql))
+            {
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
+            }
 		}
 	} else if(isset($_POST["edit"])) {
 		$sif_pristanista = $_POST["sif_pristanista"];
@@ -101,28 +86,18 @@
 		if ($sif_nadr_prist == "") {
 			$sif_nadr_prist = "NULL";
 		}
+		$errors = array();
+		if ($sifra_luke < 1) {
+			$errors[0] = "Odaberite luku";
+		}
+		if (strlen($naziv_pristanista) < 3) {
+			$errors[1] = "Naziv pristaništa mora imati više od 3 slova";
+		}
+		if (!is_numeric($kapacitet_broda)) {
+			$errors[2] = "Kapacitet broda mora biti cijeli broj";
+		}
 
-		if (is_numeric($kapacitet_broda) && strlen($naziv_pristanista) > 2 && $kapacitet_broda > 0 && $sif_nadr_prist > 0) {
-
-
-			$sql = "SELECT sifraLuke, brojPristanista FROM luka WHERE sifraLuke = $sifra_luke";
-			if ($result = mysqli_query($conn, $sql)) {
-				if (mysqli_num_rows($result)) {
-					while($row = mysqli_fetch_assoc($result)) {
-						$maxBrPrist = $row["brojPristanista"];
-					}
-				}
-				mysqli_free_result($result);
-			}
-			$sql = "select count(sifraLuke) as cnt from pristaniste where sifraLuke = $sifra_luke";
-			if ($result = mysqli_query($conn, $sql)) {
-				if (mysqli_num_rows($result)) {
-					while($row = mysqli_fetch_assoc($result)) {
-						$brPrist = $row["cnt"];
-					}
-				}
-				mysqli_free_result($result);
-			}
+		if (count($errors) == 0) {
 			require_once 'connection.php';
 			$sql = "UPDATE pristaniste SET sifraLuke = '$sifra_luke', kapacitetBroda = '$kapacitet_broda', nazivPristanista = '$naziv_pristanista', sifraNadredenogPristanista = $sif_nadr_prist WHERE sifPristanista = $sif_pristanista";
             if (mysqli_query($conn, $sql)) {
@@ -133,10 +108,8 @@
 				$sif_nadr_prist = "";
                 exit(header("Location: pristaniste.php"));
             } else {
-                echo '<script>alert("Dogodila se greška prilikom uredjivanja podataka u bazi!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
-		} else {
-			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
 		}
 
 		$pristanista = array();
@@ -202,18 +175,18 @@
 						<input type="hidden" name="sif_pristanista" value="<?php echo $sif_pristanista; ?>">
 						<?php } ?>
 						<label for="sifra_luke">Odaberite luku</label>
-						<select name="sifra_luke" onchange="this.form.submit()">
+						<select class="<?php if($errors[0]) { echo "error"; } ?>" name="sifra_luke" onchange="this.form.submit()">
 							<option value="">-- Odaberite mjesto --</option>
 						<?php foreach ($mjesta as $key => $value) { ?>
 							<option value="<?php echo $value["sifraLuke"]; ?>" <?php if ($sifra_luke == $value["sifraLuke"]) { echo "selected"; } ?>><?php echo $value["nazivLuke"] . " (" . $value["nazivMjesta"] . ")"; ?></option>
 						<?php } ?>
 						</select>
 						<label for="naziv_pristanista">Naziv pristaništa</label>
-						<input type="text" min="0" name="naziv_pristanista" value="<?php echo $naziv_pristanista; ?>">
+						<input class="<?php if($errors[1]) { echo "error"; } ?>" type="text" min="0" name="naziv_pristanista" value="<?php echo $naziv_pristanista; ?>">
 						<label for="kapacitet_broda">Kapacitet broda</label>
-						<input type="number" min="0" name="kapacitet_broda" value="<?php echo $kapacitet_broda; ?>">
+						<input class="<?php if($errors[2]) { echo "error"; } ?>" type="number" min="0" name="kapacitet_broda" value="<?php echo $kapacitet_broda; ?>">
 						<label for="sif_nadr_pristanista">Nadredjeno pristanište</label>
-						<select name="sif_nadr_pristanista">
+						<select class="<?php if($errors[3]) { echo "error"; } ?>" name="sif_nadr_pristanista">
 							<option value="">-- Odaberite pristanište --</option>
 						<?php foreach ($pristanista as $key => $value) { ?>
 							<option value="<?php echo $value["sifPristanista"]; ?>" 
