@@ -66,22 +66,15 @@
 		} else {
 			$errors[0] = "Neispravno upisano vrijeme";
 		}
-
 		if (DateTime::createFromFormat('H:i', $satDolaska) !== FALSE) {
 		} else {
 			$errors[1] = "Neispravno upisano vrijeme";
 		}
-
-		if ($sifraOdlaznogPristanista == $sifraDolaznogPristanista) {
-			$errors[2] = "Odlazno i dolazno pristanište moraju biti različiti";
-			$errors[3] = "Odlazno i dolazno pristanište moraju biti različiti";
-		} else {
-			if (!$sifraOdlaznogPristanista) {
-				$errors[2] = "Morate odabrati odlazno polazište";
-			}
-			if (!$sifraDolaznogPristanista) {
-				$errors[3] = "Morate odabrati dolazno polazište";
-			}
+		if (!$sifraOdlaznogPristanista) {
+			$errors[2] = "Morate odabrati odlazno polazište";
+		}
+		if (!$sifraDolaznogPristanista) {
+			$errors[3] = "Morate odabrati dolazno polazište";
 		}
 
 		if (count($errors) == 0) {
@@ -93,9 +86,9 @@
 				$dan = "";
 				$sifraOdlaznogPristanista = "";
 				$sifraDolaznogPristanista = "";
-                exit(header("Location: nova_linija.php"));
+                exit(header("Location: linija.php"));
             } else {
-                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
 		}
 	} else if (isset($_POST["edit"])) {
@@ -112,22 +105,15 @@
 		} else {
 			$errors[0] = "Neispravno upisano vrijeme";
 		}
-
 		if (DateTime::createFromFormat('H:i', $satDolaska) !== FALSE) {
 		} else {
 			$errors[1] = "Neispravno upisano vrijeme";
 		}
-
-		if ($sifraOdlaznogPristanista == $sifraDolaznogPristanista) {
-			$errors[2] = "Odlazno i dolazno pristanište moraju biti različiti";
-			$errors[3] = "Odlazno i dolazno pristanište moraju biti različiti";
-		} else {
-			if (!$sifraOdlaznogPristanista) {
-				$errors[2] = "Morate odabrati odlazno polazište";
-			}
-			if (!$sifraDolaznogPristanista) {
-				$errors[3] = "Morate odabrati dolazno polazište";
-			}
+		if (!$sifraOdlaznogPristanista) {
+			$errors[2] = "Morate odabrati odlazno polazište";
+		}
+		if (!$sifraDolaznogPristanista) {
+			$errors[3] = "Morate odabrati dolazno polazište";
 		}
 
 		if (count($errors) == 0) {
@@ -142,7 +128,7 @@
 				$sifraDolaznogPristanista = "";
                 exit(header("Location: linija.php"));
             } else {
-                echo '<script>alert("Dogodila se greška prilikom uredjivanja podataka u bazi!");</script>';
+            	echo "<script>alert('" . mysqli_error($conn) . "');</script>";
             }
 		}
 		$ima_linija = true;
