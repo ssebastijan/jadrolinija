@@ -45,6 +45,7 @@
 		}
 
 	} else if(isset($_POST["save"])) {
+		$start = microtime();
 		$sifra_luke = $_POST["sifra_luke"];
 		$kapacitet_broda = $_POST["kapacitet_broda"];
 		$naziv_pristanista = $_POST["naziv_pristanista"];
@@ -64,13 +65,19 @@
 		}
 
 		if (count($errors) == 0) {
+			$start = microtime(TRUE) - time();
 			require_once 'connection.php';
 			$sql = "INSERT INTO pristaniste (sifraLuke, kapacitetBroda, nazivPristanista, sifraNadredenogPristanista) VALUES ('$sifra_luke', '$kapacitet_broda', '$naziv_pristanista', $sif_nadr_pristanista);";
             if (mysqli_query($conn, $sql)) {
 				$sifra_luke = "";
 				$kapacitet_broda = "";
 				$sif_nadr_pristanista = "";
-                exit(header("Location: novo_pristaniste.php"));
+				$end = microtime();
+				$time = $end - $start;
+				$stop = microtime(TRUE) - time();
+				$diff = $stop - $start;
+				echo "<script>if(!alert('" . ($diff * 1000) . " ms')){window.location.reload();}</script>";
+				die();
             }
             if (!mysqli_query($conn, $sql))
             {
