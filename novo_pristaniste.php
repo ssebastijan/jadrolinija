@@ -65,7 +65,7 @@
 		}
 
 		if (count($errors) == 0) {
-			$start = microtime(TRUE) - time();
+			$start = microtime(TRUE);
 			require_once 'connection.php';
 			$sql = "INSERT INTO pristaniste (sifraLuke, kapacitetBroda, nazivPristanista, sifraNadredenogPristanista) VALUES ('$sifra_luke', '$kapacitet_broda', '$naziv_pristanista', $sif_nadr_pristanista);";
             if (mysqli_query($conn, $sql)) {
@@ -74,7 +74,7 @@
 				$sif_nadr_pristanista = "";
 				$end = microtime();
 				$time = $end - $start;
-				$stop = microtime(TRUE) - time();
+				$stop = microtime(TRUE);
 				$diff = $stop - $start;
 				echo "<script>if(!alert('" . ($diff * 1000) . " ms')){window.location.reload();}</script>";
 				die();
