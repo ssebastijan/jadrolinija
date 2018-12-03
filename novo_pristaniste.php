@@ -92,9 +92,9 @@
 					$kapacitet_broda = "";
 					$sif_nadr_pristanista = "";
 					$stop = microtime(TRUE) - time();
-					$time = $stop - $start;
-					echo "<script>if(!alert('{$time} ms')){window.location.reload();}</script>";
-	                exit(header("Location: novo_pristaniste.php"));
+					$diff = $stop - $start;
+					echo "<script>if(!alert('" . ($diff * 1000) . " ms')){window.location.reload();}</script>";
+					die();
 	            } else {
 	                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
 	            }
