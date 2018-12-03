@@ -19,6 +19,7 @@
 			</nav>
 		</div>
 		<div class="content">
+			<h4>Autor: Sebastijan Sakač</h4>
 		</div>
 	</body>
 </html>
