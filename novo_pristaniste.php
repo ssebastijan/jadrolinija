@@ -93,7 +93,7 @@
 					$sif_nadr_pristanista = "";
 					$stop = microtime(TRUE) - time();
 					$time = $stop - $start;
-					echo "<script>if(!alert('{$time}')){window.location.reload();}</script>";
+					echo "<script>if(!alert('{$time} ms')){window.location.reload();}</script>";
 	                exit(header("Location: novo_pristaniste.php"));
 	            } else {
 	                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
