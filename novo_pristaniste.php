@@ -52,10 +52,19 @@
 		if ($sif_nadr_pristanista == "") {
 			$sif_nadr_pristanista = "NULL";
 		}
+		$errors = array();
+		if (!$sifra_luke) {
+			$errors[0] = "Odaberite luku";
+		}
+		if (strlen($naziv_pristanista) < 3) {
+			$errors[1] = "Prekratko ime";
+		}
+		if (!is_numeric($kapacitet_broda)) {
+			$errors[2] = "Morate unijeti broj";
+		}
 
-		if (is_numeric($kapacitet_broda)) {
-
-
+		if (count($errors) == 0) {
+			$start = microtime(TRUE) - time();
 			$sql = "SELECT sifraLuke, brojPristanista FROM luka WHERE sifraLuke = $sifra_luke";
 			if ($result = mysqli_query($conn, $sql)) {
 				if (mysqli_num_rows($result)) {
@@ -82,6 +91,9 @@
 					$sifra_luke = "";
 					$kapacitet_broda = "";
 					$sif_nadr_pristanista = "";
+					$stop = microtime(TRUE) - time();
+					$time = $stop - $start;
+					echo "<script>if(!alert('{$time}')){window.location.reload();}</script>";
 	                exit(header("Location: novo_pristaniste.php"));
 	            } else {
 	                echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
@@ -89,8 +101,6 @@
 	        } else {
 	        	echo '<script>alert("Popunjena su sva mjesta u luci!");</script>';
 	        }
-		} else {
-			echo '<script>alert("Nisu sva polja ispravno popunjena!");</script>';
 		}
 	} else if(isset($_POST["edit"])) {
 		$sif_pristanista = $_POST["sif_pristanista"];
@@ -202,16 +212,16 @@
 						<input type="hidden" name="sif_pristanista" value="<?php echo $sif_pristanista; ?>">
 						<?php } ?>
 						<label for="sifra_luke">Odaberite luku</label>
-						<select name="sifra_luke" onchange="this.form.submit()">
+						<select class="<?php if($errors[0]) { echo "error"; } ?>" name="sifra_luke" onchange="this.form.submit()">
 							<option value="">-- Odaberite mjesto --</option>
 						<?php foreach ($mjesta as $key => $value) { ?>
 							<option value="<?php echo $value["sifraLuke"]; ?>" <?php if ($sifra_luke == $value["sifraLuke"]) { echo "selected"; } ?>><?php echo $value["nazivLuke"] . " (" . $value["nazivMjesta"] . ")"; ?></option>
 						<?php } ?>
 						</select>
 						<label for="naziv_pristanista">Naziv pristaništa</label>
-						<input type="text" min="0" name="naziv_pristanista" value="<?php echo $naziv_pristanista; ?>">
+						<input class="<?php if($errors[1]) { echo "error"; } ?>" type="text" min="0" name="naziv_pristanista" value="<?php echo $naziv_pristanista; ?>">
 						<label for="kapacitet_broda">Kapacitet broda</label>
-						<input type="number" min="0" name="kapacitet_broda" value="<?php echo $kapacitet_broda; ?>">
+						<input class="<?php if($errors[2]) { echo "error"; } ?>" type="number" min="0" name="kapacitet_broda" value="<?php echo $kapacitet_broda; ?>">
 						<label for="sif_nadr_pristanista">Nadredjeno pristanište</label>
 						<select name="sif_nadr_pristanista">
 							<option value="">-- Odaberite pristanište --</option>
