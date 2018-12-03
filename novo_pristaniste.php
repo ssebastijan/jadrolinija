@@ -64,7 +64,7 @@
 		}
 
 		if (count($errors) == 0) {
-			$start = microtime(TRUE) - time();
+			$start = microtime(TRUE);
 			$sql = "SELECT sifraLuke, brojPristanista FROM luka WHERE sifraLuke = $sifra_luke";
 			if ($result = mysqli_query($conn, $sql)) {
 				if (mysqli_num_rows($result)) {
@@ -91,7 +91,7 @@
 					$sifra_luke = "";
 					$kapacitet_broda = "";
 					$sif_nadr_pristanista = "";
-					$stop = microtime(TRUE) - time();
+					$stop = microtime(TRUE);
 					$diff = $stop - $start;
 					echo "<script>if(!alert('" . ($diff * 1000) . " ms')){window.location.reload();}</script>";
 					die();
