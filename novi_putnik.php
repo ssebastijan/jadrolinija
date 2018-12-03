@@ -47,7 +47,7 @@
 		if (!validacijaImena($ime_putnika)) {
 			$errors[0] = "Neispravno uneseno ime";
 		}
-		if (!validacijaImena($ime_putnika)) {
+		if (!validacijaImena($prezime_putnika)) {
 			$errors[1] = "Neispravno uneseno prezime";
 		}
 		if (!validacijaPutovnice($broj_putovnice)) {
