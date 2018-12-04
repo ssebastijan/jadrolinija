@@ -64,17 +64,24 @@
 
 		if (DateTime::createFromFormat('H:i', $satOdlaska) !== FALSE) {
 		} else {
-			$errors[0] = "Neispravno upisano vrijeme";
+			$errors[0] = "Neispravno upisano vrijeme odlaska";
 		}
 
 		if (DateTime::createFromFormat('H:i', $satDolaska) !== FALSE) {
 		} else {
-			$errors[1] = "Neispravno upisano vrijeme";
+			$errors[1] = "Neispravno upisano vrijeme dolaska";
+		}
+
+		if($errors[0] == "" && $errors[1] == "") {
+			$vrijemePolaska = date_timestamp_get(date_create_from_format('H:i', $satOdlaska));
+			$VrijemeDolaska = date_timestamp_get(date_create_from_format('H:i', $satDolaska));
+			if ($vrijemePolaska > $VrijemeDolaska) {
+				$errors[0] = "Vrijeme polaska mora biti manje od vremena dolaska";
+			}
 		}
 
 		if ($sifraOdlaznogPristanista == $sifraDolaznogPristanista) {
 			$errors[2] = "Odlazno i dolazno pristanište moraju biti različiti";
-			$errors[3] = "Odlazno i dolazno pristanište moraju biti različiti";
 		} else {
 			if (!$sifraOdlaznogPristanista) {
 				$errors[2] = "Morate odabrati odlazno polazište";
@@ -97,6 +104,9 @@
             } else {
                 echo '<script>alert("Dogodila se greška prilikom spremanja podataka u bazu!");</script>';
             }
+		} else {
+			$message = implode(", ", $errors);
+			echo '<script>alert("' . $message . '");</script>';
 		}
 	} else if (isset($_POST["edit"])) {
 		$sifra_linije = $_POST["sifraLinije"];
@@ -189,7 +199,7 @@
 						<label for="satOdlaska">Sat odlaska</label>
 						<input class="<?php if($errors[0]) { echo "error"; } ?>" type="datetime" name="satOdlaska" placeholder="hh:mm" value="<?php echo $satOdlaska; ?>">
 						<label for="satDolaska">Sat dolaska</label>
-						<input class="<?php if($errors[1]) { echo "error"; } ?>" type="datetime" name="satDolaska" placeholder="hh:mm" value="<?php echo $satDolaska; ?>">
+						<input class="<?php if($errors[0]) { echo "error"; } ?>" type="datetime" name="satDolaska" placeholder="hh:mm" value="<?php echo $satDolaska; ?>">
 						<label for="dan">Dan</label>
 						<select name="dan">
 							<option value="Ponedjeljak" <?php if($dan == "Ponedjeljak") { echo "selected"; } ?>>Ponedjeljak</option>
@@ -208,7 +218,7 @@
 							<?php } ?>
 						</select>
 						<label for="sifraDolaznogPristanista">Dolazno pristanište</label>
-						<select class="<?php if($errors[3]) { echo "error"; } ?>" name="sifraDolaznogPristanista">
+						<select class="<?php if($errors[2]) { echo "error"; } ?>" name="sifraDolaznogPristanista">
 							<option value="0">-- Odaberite pristanište --</option>
 							<?php foreach ($pristanista as $pristaniste) { ?>
 								<option value="<?php echo $pristaniste["sifPristanista"]; ?>" <?php if($sifraDolaznogPristanista == $pristaniste["sifPristanista"]) { echo "selected"; } ?>><?php echo $pristaniste["nazivPristanista"]; ?></option>
