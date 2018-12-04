@@ -128,6 +128,14 @@
 			$errors[1] = "Neispravno upisano vrijeme";
 		}
 
+		if($errors[0] == "" && $errors[1] == "") {
+			$vrijemePolaska = date_timestamp_get(date_create_from_format('H:i', $satOdlaska));
+			$VrijemeDolaska = date_timestamp_get(date_create_from_format('H:i', $satDolaska));
+			if ($vrijemePolaska > $VrijemeDolaska) {
+				$errors[0] = "Vrijeme polaska mora biti manje od vremena dolaska";
+			}
+		}
+
 		if ($sifraOdlaznogPristanista == $sifraDolaznogPristanista) {
 			$errors[2] = "Odlazno i dolazno pristanište moraju biti različiti";
 			$errors[3] = "Odlazno i dolazno pristanište moraju biti različiti";
@@ -154,6 +162,9 @@
             } else {
                 echo '<script>alert("Dogodila se greška prilikom uredjivanja podataka u bazi!");</script>';
             }
+		} else {
+			$message = implode(", ", $errors);
+			echo '<script>alert("' . $message . '");</script>';
 		}
 		$ima_linija = true;
 	}
